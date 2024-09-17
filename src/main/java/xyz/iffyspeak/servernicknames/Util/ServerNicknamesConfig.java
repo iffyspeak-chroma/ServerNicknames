@@ -29,13 +29,19 @@ public class ServerNicknamesConfig {
     }
 
     public static void loadConfig(File file) {
+        // Initialize FileConfig for TOML
         config = FileConfig.of(file, TomlFormat.instance());
         config.load();
 
         if (config.contains("nicknames")) {
-            Map<String, Object> loadedNicknames = config.get("nicknames");
-            for (Map.Entry<String, Object> entry : loadedNicknames.entrySet()) {
-                nicklist.put(UUID.fromString(entry.getKey()), (String) entry.getValue());
+            Map<String, String> loadedNicknames = (Map<String, String>) config.get("nicknames");
+            for (Map.Entry<String, String> entry : loadedNicknames.entrySet()) {
+                try {
+                    UUID uuid = UUID.fromString(entry.getKey());
+                    nicklist.put(uuid, entry.getValue());
+                } catch (IllegalArgumentException e) {
+                    LOGGER.warn("Invalid UUID format: " + entry.getKey());
+                }
             }
         } else {
             LOGGER.warn("No nicknames map in config. No nicknames will be applied.");
