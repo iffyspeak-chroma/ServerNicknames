@@ -36,7 +36,7 @@ public class ModBusEventManager {
         ServerNicknamesConfig.saveConfig();
         LOGGER.info("Finished saving.");
     }
-     */
+
 
     @SubscribeEvent
     public static void onPlayerChat(ServerChatEvent _e)
@@ -50,4 +50,5 @@ public class ModBusEventManager {
         _e.setMessage(formatted);
 
     }
+    */
 }
