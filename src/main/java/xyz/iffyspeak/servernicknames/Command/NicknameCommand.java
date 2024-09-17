@@ -46,9 +46,6 @@ public class NicknameCommand {
         // Set the nickname
         ServerNicknamesConfig.setNickname(player.getUUID(), nickname);
 
-        // Update player list display name
-        Utilities.Server.NMP.updateTabListForPlayer(player, nickname);
-
         // Notify the player
         player.sendSystemMessage(Component.literal("Your nickname has been changed to: " + nickname));
         LOGGER.info("Player " + player.getName().getString() + " changed their nickname to " + nickname);
@@ -62,10 +59,6 @@ public class NicknameCommand {
 
         // Clear the nickname in your config or data storage
         ServerNicknamesConfig.setNickname(player.getUUID(), null);
-
-        // Update player list display name
-        //ServerNicknamesConfig.updatePlayerList(player);
-        Utilities.Server.NMP.updateTabListForPlayer(player, ServerNicknamesConfig.getNickname(player.getUUID()));
 
         // Notify the player
         player.sendSystemMessage(Component.literal("Your nickname has been cleared."));

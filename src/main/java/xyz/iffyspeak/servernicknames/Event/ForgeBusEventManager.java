@@ -42,18 +42,6 @@ public class ForgeBusEventManager {
     }
 
     @SubscribeEvent
-    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent _e)
-    {
-        Utilities.Players.fullPlayerlistUpdate();
-    }
-
-    @SubscribeEvent
-    public static void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent _e)
-    {
-        Utilities.Players.fullPlayerlistUpdate();
-    }
-
-    @SubscribeEvent
     public static void onPlayerChat(ServerChatEvent _e)
     {
         ServerPlayer player = _e.getPlayer();
