@@ -16,7 +16,11 @@ public class ServerNicknamesConfig {
 
     public static void setNickname(UUID uuid, String nickname)
     {
-        nicklist.put(uuid, nickname);
+        if (nickname == null) {
+            nicklist.remove(uuid);
+        } else {
+            nicklist.put(uuid, nickname);
+        }
         saveConfig();
     }
 
