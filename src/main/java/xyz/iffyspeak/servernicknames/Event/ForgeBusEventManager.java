@@ -25,7 +25,7 @@ public class ForgeBusEventManager {
     {
         Utilities.Server.setServer(_e.getServer());
         LOGGER.info("Loading nicknames config");
-        File configFile = new File(_e.getServer().getServerDirectory(), "config/nicknames.json");
+        File configFile = new File(_e.getServer().getServerDirectory(), "config/nicknames.toml");
         ServerNicknamesConfig.loadConfig(configFile);
         LOGGER.info("Finished loading.");
         NicknameCommand.register(_e.getServer().getCommands().getDispatcher());
