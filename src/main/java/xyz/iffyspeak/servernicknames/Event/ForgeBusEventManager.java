@@ -2,6 +2,7 @@ package xyz.iffyspeak.servernicknames.Event;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
@@ -43,12 +44,20 @@ public class ForgeBusEventManager {
     public static void onPlayerChat(ServerChatEvent _e)
     {
         UUID pUUID = _e.getPlayer().getUUID();
-        String nickname = ServerNicknamesConfig.getNickname(pUUID);
 
-        Component msg = _e.getMessage();
-        Component formatted = Component.literal(nickname + " (" + Utilities.Players.getUsername(pUUID, Utilities.Server.getServer()) + ") ").append(msg);
+        if (ServerNicknamesConfig.hasNickname(pUUID))
+        {
+            String nickname = ServerNicknamesConfig.getNickname(pUUID);
 
-        _e.setMessage(formatted);
+            Component msg = _e.getMessage();
+            Component formatted = Component.literal(nickname + " (" + Utilities.Players.getUsername(pUUID, Utilities.Server.getServer()) + ") ").append(msg);
 
+            _e.setCanceled(true);
+
+            for (ServerPlayer player : Utilities.Server.getServer().getPlayerList().getPlayers())
+            {
+                player.sendSystemMessage(formatted);
+            }
+        }
     }
 }
