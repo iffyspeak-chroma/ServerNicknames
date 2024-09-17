@@ -1,8 +1,6 @@
 package xyz.iffyspeak.servernicknames.Event;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.network.chat.Component;
-import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,10 +12,9 @@ import xyz.iffyspeak.servernicknames.Util.ServerNicknamesConfig;
 import xyz.iffyspeak.servernicknames.Util.Utilities;
 
 import java.io.File;
-import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = ServerNicknames.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class EventManager {
+@Mod.EventBusSubscriber(modid = ServerNicknames.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+public class ForgeBusEventManager {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     @SubscribeEvent
@@ -37,18 +34,5 @@ public class EventManager {
         LOGGER.info("Saving nicknames config");
         ServerNicknamesConfig.saveConfig();
         LOGGER.info("Finished saving.");
-    }
-
-    @SubscribeEvent
-    public static void onPlayerChat(ServerChatEvent _e)
-    {
-        UUID pUUID = _e.getPlayer().getUUID();
-        String nickname = ServerNicknamesConfig.getNickname(pUUID);
-
-        Component msg = _e.getMessage();
-        Component formatted = Component.literal(nickname + " (" + Utilities.Players.getUsername(pUUID, Utilities.Server.getServer()) + ") ").append(msg);
-
-        _e.setMessage(formatted);
-
     }
 }
