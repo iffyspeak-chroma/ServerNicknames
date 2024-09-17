@@ -17,4 +17,18 @@ public class Utilities {
             return player != null ? player.getName().getString() : "NOTHINGRETURNED";
         }
     }
+
+    public static class Server {
+        private static MinecraftServer _server;
+
+        public static void setServer(MinecraftServer server)
+        {
+            _server = server;
+        }
+
+        public static MinecraftServer getServer()
+        {
+            return _server;
+        }
+    }
 }
