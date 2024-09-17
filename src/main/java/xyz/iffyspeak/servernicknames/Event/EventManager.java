@@ -8,6 +8,7 @@ import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.slf4j.Logger;
+import xyz.iffyspeak.servernicknames.Command.NicknameCommand;
 import xyz.iffyspeak.servernicknames.ServerNicknames;
 import xyz.iffyspeak.servernicknames.Util.ServerNicknamesConfig;
 import xyz.iffyspeak.servernicknames.Util.Utilities;
@@ -27,6 +28,7 @@ public class EventManager {
         File configFile = new File(_e.getServer().getServerDirectory(), "config/nicknames.json");
         ServerNicknamesConfig.loadConfig(configFile);
         LOGGER.info("Finished loading.");
+        NicknameCommand.register(_e.getServer().getCommands().getDispatcher());
     }
 
     @SubscribeEvent
