@@ -22,7 +22,7 @@ public class ServerNicknamesConfig {
 
     public static String getNickname(UUID uuid)
     {
-        return nicklist.getOrDefault(uuid, "TODO: DEFAULT TO PLAYERNAME");
+        return nicklist.getOrDefault(uuid, Utilities.Players.getUsername(uuid, Utilities.Server.getServer()));
     }
 
     public static void loadConfig(File file)
