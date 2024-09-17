@@ -13,6 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 import xyz.iffyspeak.servernicknames.Util.ServerNicknamesConfig;
+import xyz.iffyspeak.servernicknames.Util.Utilities;
 
 import java.util.regex.Pattern;
 
@@ -46,7 +47,7 @@ public class NicknameCommand {
         ServerNicknamesConfig.setNickname(player.getUUID(), nickname);
 
         // Update player list display name
-        ServerNicknamesConfig.updatePlayerList(player);
+        Utilities.Server.NMP.updateTabListForPlayer(player, nickname);
 
         // Notify the player
         player.sendSystemMessage(Component.literal("Your nickname has been changed to: " + nickname));
@@ -63,7 +64,8 @@ public class NicknameCommand {
         ServerNicknamesConfig.setNickname(player.getUUID(), null);
 
         // Update player list display name
-        ServerNicknamesConfig.updatePlayerList(player);
+        //ServerNicknamesConfig.updatePlayerList(player);
+        Utilities.Server.NMP.updateTabListForPlayer(player, ServerNicknamesConfig.getNickname(player.getUUID()));
 
         // Notify the player
         player.sendSystemMessage(Component.literal("Your nickname has been cleared."));

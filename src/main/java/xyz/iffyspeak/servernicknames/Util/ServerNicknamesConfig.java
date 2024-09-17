@@ -36,16 +36,6 @@ public class ServerNicknamesConfig {
                 .orElse(Utilities.Players.getUsername(uuid, Utilities.Server.getServer()));
     }
 
-    public static void updatePlayerList(ServerPlayer player) {
-        MinecraftServer server = Utilities.Server.getServer();
-        if (server != null) {
-            String nickname = getNickname(player.getUUID());
-            String playerName = player.getName().getString();
-            String displayName = nickname != null ? nickname + " (" + playerName + ")" : playerName;
-            player.displayClientMessage(Component.literal(displayName), false);
-        }
-    }
-
     public static void loadConfig(File file) {
         config = FileConfig.of(file, TomlFormat.instance());
         config.load();
