@@ -20,7 +20,7 @@ public class NicknameCommand {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     // Define the regex pattern for allowed characters
-    private static final Pattern NICKNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
+    private static final Pattern NICKNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9 ]+$");
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
