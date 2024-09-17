@@ -2,61 +2,59 @@ package xyz.iffyspeak.servernicknames.Util;
 
 import com.electronwill.nightconfig.core.file.FileConfig;
 import com.electronwill.nightconfig.toml.TomlFormat;
-import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ServerNicknamesConfig {
-    private static final Map<UUID, String> nicklist = new HashMap<>();
+    private static final List<String> nicklist = new ArrayList<>();
     private static FileConfig config;
-    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerNicknamesConfig.class);
 
     public static void setNickname(UUID uuid, String nickname) {
-        if (nickname == null) {
-            nicklist.remove(uuid);
-        } else {
-            nicklist.put(uuid, nickname);
+        // Remove existing entry if it exists
+        nicklist.removeIf(entry -> entry.startsWith(uuid.toString() + ":"));
+
+        if (nickname != null) {
+            nicklist.add(uuid.toString() + ":" + nickname);
         }
         saveConfig();
     }
 
     public static String getNickname(UUID uuid) {
-        return nicklist.getOrDefault(uuid, Utilities.Players.getUsername(uuid, Utilities.Server.getServer()));
+        return nicklist.stream()
+                .filter(entry -> entry.startsWith(uuid.toString() + ":"))
+                .map(entry -> entry.substring(uuid.toString().length() + 1))
+                .findFirst()
+                .orElse(Utilities.Players.getUsername(uuid, Utilities.Server.getServer()));
     }
 
     public static void loadConfig(File file) {
-        // Initialize FileConfig for TOML
         config = FileConfig.of(file, TomlFormat.instance());
         config.load();
 
         if (config.contains("nicknames")) {
-            Map<String, String> loadedNicknames = (Map<String, String>) config.get("nicknames");
-            for (Map.Entry<String, String> entry : loadedNicknames.entrySet()) {
-                try {
-                    UUID uuid = UUID.fromString(entry.getKey());
-                    nicklist.put(uuid, entry.getValue());
-                } catch (IllegalArgumentException e) {
-                    LOGGER.warn("Invalid UUID format: " + entry.getKey());
-                }
-            }
+            // Cast to List<String>
+            List<String> loadedNicknames = (List<String>) config.get("nicknames");
+            nicklist.clear();
+            nicklist.addAll(loadedNicknames);
         } else {
-            LOGGER.warn("No nicknames map in config. No nicknames will be applied.");
+            LOGGER.warn("No nicknames in config. No nicknames will be applied.");
         }
     }
 
     public static void saveConfig() {
         if (config == null) return;
 
-        Map<String, String> saveMap = new HashMap<>();
-        for (Map.Entry<UUID, String> entry : nicklist.entrySet()) {
-            saveMap.put(entry.getKey().toString(), entry.getValue());
+        try {
+            config.set("nicknames", nicklist);
+            config.save();
+        } catch (Exception e) {
+            LOGGER.error("Failed to save config", e);
         }
-
-        config.set("nicknames", saveMap);
-        config.save();
     }
 }
