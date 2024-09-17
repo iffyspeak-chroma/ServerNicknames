@@ -33,11 +33,6 @@ public class ServerNicknamesConfig {
                 .orElse(Utilities.Players.getUsername(uuid, Utilities.Server.getServer()));
     }
 
-    public static boolean hasNickname(UUID uuid)
-    {
-        return nicklist.contains(uuid.toString());
-    }
-
     public static void loadConfig(File file) {
         config = FileConfig.of(file, TomlFormat.instance());
         config.load();

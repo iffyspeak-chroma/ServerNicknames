@@ -45,19 +45,16 @@ public class ForgeBusEventManager {
     {
         UUID pUUID = _e.getPlayer().getUUID();
 
-        if (ServerNicknamesConfig.hasNickname(pUUID))
+        String nickname = ServerNicknamesConfig.getNickname(pUUID);
+
+        Component msg = _e.getMessage();
+        Component formatted = Component.literal(nickname + " (" + Utilities.Players.getUsername(pUUID, Utilities.Server.getServer()) + ") ").append(msg);
+
+        for (ServerPlayer player : Utilities.Server.getServer().getPlayerList().getPlayers())
         {
-            String nickname = ServerNicknamesConfig.getNickname(pUUID);
-
-            Component msg = _e.getMessage();
-            Component formatted = Component.literal(nickname + " (" + Utilities.Players.getUsername(pUUID, Utilities.Server.getServer()) + ") ").append(msg);
-
-            _e.setCanceled(true);
-
-            for (ServerPlayer player : Utilities.Server.getServer().getPlayerList().getPlayers())
-            {
-                player.sendSystemMessage(formatted);
-            }
+            player.sendSystemMessage(formatted);
         }
+
+        _e.setCanceled(true);
     }
 }
