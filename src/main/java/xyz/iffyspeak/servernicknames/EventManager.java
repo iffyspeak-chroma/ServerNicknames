@@ -1,13 +1,11 @@
 package xyz.iffyspeak.servernicknames;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -27,7 +25,7 @@ public class EventManager {
     }
 
     @SubscribeEvent
-    public static void onServerStop(ServerStoppingEvent _e)
+    public static void onServerStop(ServerStoppingEvent ignore)
     {
         LOGGER.info("Saving nicknames config");
         ServerNicknamesConfig.saveConfig();
