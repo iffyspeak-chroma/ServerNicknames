@@ -1,7 +1,7 @@
 package xyz.iffyspeak.servernicknames.Event;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -56,18 +56,26 @@ public class ForgeBusEventManager {
     @SubscribeEvent
     public static void onPlayerChat(ServerChatEvent _e)
     {
-        UUID pUUID = _e.getPlayer().getUUID();
+        ServerPlayer player = _e.getPlayer();
+        String nickname = ServerNicknamesConfig.getNickname(player.getUUID());
+        String playername = player.getName().getString();
+        String message = _e.getMessage().getString();
 
-        String nickname = ServerNicknamesConfig.getNickname(pUUID);
-
-        Component msg = _e.getMessage();
-        Component formatted = Component.literal(nickname + " (" + Utilities.Players.getUsername(pUUID, Utilities.Server.getServer()) + ") ").append(msg);
-
-        for (ServerPlayer player : Utilities.Server.getServer().getPlayerList().getPlayers())
+        String formattedMessage;
+        if (nickname != null && !nickname.isEmpty())
         {
-            player.sendSystemMessage(formatted);
+            formattedMessage = nickname + " (" + playername + ") : " + message;
+        } else {
+            formattedMessage = playername + " : " + message;
         }
 
+        MutableComponent formattedComponent = Component.literal(formattedMessage);
+
         _e.setCanceled(true);
+
+        for (ServerPlayer op : player.getServer().getPlayerList().getPlayers())
+        {
+            op.sendSystemMessage(formattedComponent);
+        }
     }
 }
