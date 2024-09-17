@@ -10,21 +10,27 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.slf4j.Logger;
 
+import java.io.File;
+
 @Mod.EventBusSubscriber(modid = ServerNicknames.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EventManager {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
     @SubscribeEvent
     public static void onServerStart(ServerStartingEvent _e)
     {
         LOGGER.info("Loading nicknames config");
+        File configFile = new File(_e.getServer().getServerDirectory(), "config/nicknames.json");
+        ServerNicknamesConfig.loadConfig(configFile);
+        LOGGER.info("Finished loading.");
     }
 
     @SubscribeEvent
     public static void onServerStop(ServerStoppingEvent _e)
     {
         LOGGER.info("Saving nicknames config");
+        ServerNicknamesConfig.saveConfig();
+        LOGGER.info("Finished saving.");
     }
 
     @SubscribeEvent
