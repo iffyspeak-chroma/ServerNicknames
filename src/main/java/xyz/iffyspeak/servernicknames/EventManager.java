@@ -19,6 +19,7 @@ public class EventManager {
     @SubscribeEvent
     public static void onServerStart(ServerStartingEvent _e)
     {
+        Utilities.Server.setServer(_e.getServer());
         LOGGER.info("Loading nicknames config");
         File configFile = new File(_e.getServer().getServerDirectory(), "config/nicknames.json");
         ServerNicknamesConfig.loadConfig(configFile);
