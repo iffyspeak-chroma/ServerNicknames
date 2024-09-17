@@ -38,12 +38,15 @@ public class NicknameCommand {
 
         // Validate nickname with regex
         if (!NICKNAME_PATTERN.matcher(nickname).matches()) {
-            player.sendSystemMessage(Component.literal("Invalid nickname! Only letters and numbers are allowed."));
+            player.sendSystemMessage(Component.literal("Invalid nickname! Only letters, numbers, and spaces are allowed."));
             return Command.SINGLE_SUCCESS;
         }
 
         // Set the nickname
         ServerNicknamesConfig.setNickname(player.getUUID(), nickname);
+
+        // Update player list display name
+        ServerNicknamesConfig.updatePlayerList(player);
 
         // Notify the player
         player.sendSystemMessage(Component.literal("Your nickname has been changed to: " + nickname));
@@ -58,6 +61,9 @@ public class NicknameCommand {
 
         // Clear the nickname in your config or data storage
         ServerNicknamesConfig.setNickname(player.getUUID(), null);
+
+        // Update player list display name
+        ServerNicknamesConfig.updatePlayerList(player);
 
         // Notify the player
         player.sendSystemMessage(Component.literal("Your nickname has been cleared."));

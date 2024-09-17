@@ -2,6 +2,9 @@ package xyz.iffyspeak.servernicknames.Util;
 
 import com.electronwill.nightconfig.core.file.FileConfig;
 import com.electronwill.nightconfig.toml.TomlFormat;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +34,16 @@ public class ServerNicknamesConfig {
                 .map(entry -> entry.substring(uuid.toString().length() + 1))
                 .findFirst()
                 .orElse(Utilities.Players.getUsername(uuid, Utilities.Server.getServer()));
+    }
+
+    public static void updatePlayerList(ServerPlayer player) {
+        MinecraftServer server = Utilities.Server.getServer();
+        if (server != null) {
+            String nickname = getNickname(player.getUUID());
+            String playerName = player.getName().getString();
+            String displayName = nickname != null ? nickname + " (" + playerName + ")" : playerName;
+            player.displayClientMessage(Component.literal(displayName), false);
+        }
     }
 
     public static void loadConfig(File file) {

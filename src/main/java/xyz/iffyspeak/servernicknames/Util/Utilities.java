@@ -16,6 +16,14 @@ public class Utilities {
 
             return player != null ? player.getName().getString() : "NOTHINGRETURNED";
         }
+
+        public static void fullPlayerlistUpdate()
+        {
+            MinecraftServer server = Server.getServer();
+            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                ServerNicknamesConfig.updatePlayerList(player);
+            }
+        }
     }
 
     public static class Server {

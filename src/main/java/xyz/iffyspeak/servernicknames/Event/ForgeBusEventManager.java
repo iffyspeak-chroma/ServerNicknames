@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -38,6 +39,18 @@ public class ForgeBusEventManager {
         LOGGER.info("Saving nicknames config");
         ServerNicknamesConfig.saveConfig();
         LOGGER.info("Finished saving.");
+    }
+
+    @SubscribeEvent
+    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent _e)
+    {
+        Utilities.Players.fullPlayerlistUpdate();
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent _e)
+    {
+        Utilities.Players.fullPlayerlistUpdate();
     }
 
     @SubscribeEvent
