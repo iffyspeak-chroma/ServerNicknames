@@ -1,6 +1,7 @@
 package xyz.iffyspeak.servernicknames;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
@@ -9,6 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = ServerNicknames.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EventManager {
@@ -35,6 +37,13 @@ public class EventManager {
     @SubscribeEvent
     public static void onPlayerChat(ServerChatEvent _e)
     {
-        // Stuff here
+        UUID pUUID = _e.getPlayer().getUUID();
+        String nickname = ServerNicknamesConfig.getNickname(pUUID);
+
+        Component msg = _e.getMessage();
+        Component formatted = Component.literal(nickname + " (" + Utilities.Players.getUsername(pUUID, Utilities.Server.getServer()) + ") ").append(msg);
+
+        _e.setMessage(formatted);
+
     }
 }
