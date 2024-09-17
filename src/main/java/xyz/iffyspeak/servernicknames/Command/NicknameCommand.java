@@ -35,6 +35,7 @@ public class NicknameCommand {
         ServerNicknamesConfig.setNickname(player.getUUID(), nickname);
 
         player.sendSystemMessage(Component.literal("Your nickname has been changed to: " + nickname));
+        LOGGER.info("Player " + player.getName().getString() + " changed their nickname to " + nickname);
 
         return Command.SINGLE_SUCCESS;
     }
@@ -49,6 +50,8 @@ public class NicknameCommand {
 
         // Notify the player
         player.sendSystemMessage(Component.literal("Your nickname has been cleared."));
+
+        LOGGER.info("Player " + player.getName().getString() + " cleared their nickname");
 
         return Command.SINGLE_SUCCESS;
     }
