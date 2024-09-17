@@ -1,4 +1,4 @@
-package xyz.iffyspeak.servernicknames;
+package xyz.iffyspeak.servernicknames.Event;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
@@ -8,6 +8,9 @@ import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.slf4j.Logger;
+import xyz.iffyspeak.servernicknames.ServerNicknames;
+import xyz.iffyspeak.servernicknames.Util.ServerNicknamesConfig;
+import xyz.iffyspeak.servernicknames.Util.Utilities;
 
 import java.io.File;
 import java.util.UUID;

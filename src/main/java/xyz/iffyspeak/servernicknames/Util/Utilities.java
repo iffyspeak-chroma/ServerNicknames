@@ -1,4 +1,4 @@
-package xyz.iffyspeak.servernicknames;
+package xyz.iffyspeak.servernicknames.Util;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;

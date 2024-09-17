@@ -1,4 +1,4 @@
-package xyz.iffyspeak.servernicknames;
+package xyz.iffyspeak.servernicknames.Util;
 
 import com.electronwill.nightconfig.core.file.FileConfig;
 import com.mojang.logging.LogUtils;
